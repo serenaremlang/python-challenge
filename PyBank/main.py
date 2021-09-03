@@ -5,7 +5,7 @@ import csv
 #initalize variables
 change_profloss = []
 change_profloss_date = []
-previous_row = 0
+previous_row = 867884
 current_row = 0
 month_count = 0
 net_total = 0
@@ -28,15 +28,13 @@ with open(csvpath) as csvfile:
         #Change in Profit/Losses over entire period then find average of those changes
         #**ask how this would be calculated
 
-        current_row = float(row[1])
+        current_row = int(row[1])
         change_profloss.append(current_row-previous_row)
         change_profloss_date.append(row[0])
         previous_row = current_row
 
     #Average profit/Losses
-    average_profloss = 0
-    print(sum(change_profloss))
-    print(len(change_profloss))
+    average_profloss = round(sum(change_profloss)/(month_count-1),2)
 
     #greatest increase in profits (date and amount) over the entire period
     greatest_increase = int(max(change_profloss))
