@@ -17,23 +17,23 @@ with open(csvpath) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
     csv_header = next(csvreader)
 
-#Analysis
+    #loop through csv
     for row in csvreader:
-        #total number of months in dataset
+        #add each row to a counter by adding one per iteration
         month_count += 1
 
-        #net total amount of Profit/Losses over entire period
+        #find net total profit/loss by adding the amount to the previous row
         net_total = int(row[1]) + net_total
 
-        #Change in Profit/Losses over entire period then find average of those changes
-        #**ask how this would be calculated
-
+        #Change in Profit/Losses over entire period
         current_row = int(row[1])
+        #Append change from previous row to current row to change list
         change_profloss.append(current_row-previous_row)
         change_profloss_date.append(row[0])
+        #reinitialize previous_row with current row
         previous_row = current_row
 
-    #Average profit/Losses
+    #Calculate average_profloss and round to 2 decimals
     average_profloss = round(sum(change_profloss)/(month_count-1),2)
 
     #greatest increase in profits (date and amount) over the entire period
@@ -45,9 +45,11 @@ with open(csvpath) as csvfile:
     greatest_decrease = int(min(change_profloss))
     greatest_decrease_date = change_profloss_date[change_profloss.index(greatest_decrease)]
 
-#Export results to text file
+#Set output path
 output_path = os.path.join("Analysis", "analysis.txt")
+#open output file
 f = open(output_path, 'w', newline='')
+#write to output file
 f.write('Financial Analysis\n')
 f.write('-'*30)
 f.write(f'\nTotal Months: {month_count}\n')
@@ -55,7 +57,7 @@ f.write(f'Total: ${net_total}\n')
 f.write(f'Average Change: ${average_profloss}\n')
 f.write(f'Greatest Increase in Profits: {greatest_increase_date} (${greatest_increase})\n')
 f.write(f'Greatest Decrease in Profits: {greatest_decrease_date} (${greatest_decrease})\n')
-
+#close output file
 f.close()
 
 #Print analysis
